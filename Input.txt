@@ -1,0 +1,41 @@
+lui $1, 0xffff
+lui $2, 0x8000
+lui $3, 0x7fff
+lui $4, 0x5a4b
+lui $5, 0x1e0f
+addi $6, $0, 0x0001
+ori $1, $1, 0xfffe
+ori $3, $3, 0xffff
+ori $4, $4, 0x3c2d
+ori $5, $5, 0xf0e1
+sub $7, $0, $6
+add $1, $1, $6
+ori $8, $2, 0x0800
+sw $1, 0($1)
+lw $4, 0($1)
+toggle:
+nor $9, $4, $5
+beq $4, $5, end
+srl $10, $2, 1
+srl $11, $2, 16
+sll $12, $8, 4
+sll $13, $8, 20
+subu $8, $8, $10
+dest:
+sltiu $24, $11, 0x7fff
+slt $9, $10, $12
+sltu $16, $10, $12
+slt $11, $13, $0
+sltu $17, $13, $0
+slti $14, $0, 0x0001
+slti $15, $13, 0x7fff
+sw $4, 0x0000($8)
+sw $5, 0x0004($8)
+sll $10, $10, 1
+srl $13, $13, 16
+bne $9, $14, dest
+addiu $11, $11, 0x0808
+addiu $8, $8, 0x0001
+j toggle
+end:
+j end
